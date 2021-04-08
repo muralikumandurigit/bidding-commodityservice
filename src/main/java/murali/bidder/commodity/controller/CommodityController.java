@@ -1,6 +1,8 @@
 package murali.bidder.commodity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,5 +24,10 @@ public class CommodityController {
 	public Commodity saveCommodity(@RequestBody Commodity commodity) {
 		log.info("Saving commodity " + commodity.toString());
 		return commodityService.saveCommodity(commodity);
+	}
+	
+	@GetMapping("/{cid}")
+	public Boolean isValidCommodity(@PathVariable String cid) {
+		return commodityService.isValidCommodity(cid);
 	}
 }

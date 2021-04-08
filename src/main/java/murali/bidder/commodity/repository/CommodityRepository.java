@@ -8,4 +8,6 @@ import murali.bidder.commodity.entity.Commodity;
 @Repository
 public interface CommodityRepository extends CassandraRepository<Commodity, String> {
 
+	public Commodity findByCid(String cid);
+
 }

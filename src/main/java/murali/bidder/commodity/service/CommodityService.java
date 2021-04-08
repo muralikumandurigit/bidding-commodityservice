@@ -26,10 +26,13 @@ public class CommodityService {
 	@Value("${user.service.endpoint}")
 	private String userServiceEndpoint;
 	
+	private Boolean isValidUser(String email) {
+		return restTemplate.getForObject(userServiceEndpoint + email, Boolean.class);
+	}
+	
 	public Commodity saveCommodity(Commodity commodity) {
 		log.info("Inside saveCommodity");
-		Boolean isValidUser = restTemplate.getForObject(userServiceEndpoint + commodity.getEmail(), Boolean.class);
-		if (isValidUser) {
+		if (isValidUser(commodity.getEmail())) {
 			commodity.setCid(UUID.randomUUID().toString());
 			return commodityRepository.save(commodity);			
 		}
@@ -37,6 +40,14 @@ public class CommodityService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
 	                "No user exist with email : " + commodity.getEmail());
 		}
+	}
+
+	private Commodity findByCid(String cid) {
+		return commodityRepository.findByCid(cid);
+	}
+	
+	public Boolean isValidCommodity(String cid) {
+		return findByCid(cid) != null ? true : false;
 	}
 	
 }
